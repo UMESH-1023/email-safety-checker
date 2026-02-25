@@ -49,11 +49,35 @@ export default function AnalyzePage() {
         lowerContent.includes(keyword)
       );
 
+      // Determine scam type
+      let scamType = "Legitimate Email";
+      if (riskLevel === "high-risk" || riskLevel === "suspicious") {
+        const scamTypes: string[] = [];
+        if (lowerContent.includes("password") || lowerContent.includes("verify") || lowerContent.includes("suspended")) {
+          scamTypes.push("Phishing");
+        }
+        if (lowerContent.includes("prize") || lowerContent.includes("winner") || lowerContent.includes("congratulations")) {
+          scamTypes.push("Lottery Scam");
+        }
+        if (lowerContent.includes("urgent") || lowerContent.includes("act now") || lowerContent.includes("limited time")) {
+          scamTypes.push("Urgency Scam");
+        }
+        if (lowerContent.includes("refund") || lowerContent.includes("payment") || lowerContent.includes("invoice")) {
+          scamTypes.push("Financial Fraud");
+        }
+        if (lowerContent.includes("click here") || lowerContent.includes("confirm")) {
+          scamTypes.push("Link Manipulation");
+        }
+        
+        scamType = scamTypes.length > 0 ? scamTypes.join(" / ") : "General Scam";
+      }
+
       const result = {
         emailContent,
         riskLevel,
         riskScore,
         suspiciousKeywords: foundKeywords,
+        scamType,
         timestamp: new Date().toISOString(),
       };
 

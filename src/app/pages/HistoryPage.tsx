@@ -8,6 +8,7 @@ interface HistoryItem {
   riskLevel: "safe" | "suspicious" | "high-risk";
   riskScore: number;
   suspiciousKeywords: string[];
+  scamType: string;
   timestamp: string;
 }
 
